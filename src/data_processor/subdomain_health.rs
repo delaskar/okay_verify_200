@@ -17,7 +17,7 @@ impl SubdomainResult {
         Self { ip_origin , status_code , header, fail}
     }
     
-    pub async fn subdomain_analyze(subdomain_list: Vec<String>) -> Result<HashMap<String, SubdomainResult>, Error> {
+    pub fn subdomain_analyze(subdomain_list: Vec<String>) -> Result<HashMap<String, SubdomainResult>, Error> {
 
         // Create result analyze 
         let mut analyze_result = HashMap::new();
@@ -27,9 +27,9 @@ impl SubdomainResult {
             
             // Setting url
             let url: String = format!("http://{}", &subdomain);
-            
+
             // Get subdomain response
-            let _response = match blocking::get(url)  {
+            match blocking::get(url)  {
                 Ok(res_success) => {
 
                     let subdomain_result = Self::build_subdomain_result(
