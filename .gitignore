@@ -98,6 +98,6 @@ $RECYCLE.BIN/
 *.lnk
 
 # Test Resourses
-subdomains/
+Subdomains_Reddit/
 
 # End of https://www.toptal.com/developers/gitignore/api/rust,rust-analyzer,macos,linux,windows

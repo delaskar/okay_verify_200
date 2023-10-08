@@ -1,9 +1,11 @@
 mod data_processor;
 pub use crate::data_processor::file_processing;
-// pub use crate::data_processor::subdomain_health;
+pub use crate::data_processor::subdomain_health;
 use std::path::PathBuf;
+use tokio;
 
-fn main() {
+#[tokio::main]
+async fn main() {
     println!("Okay-Verify-200");
 
     let user_path: String =
@@ -11,6 +13,10 @@ fn main() {
     let path_file: PathBuf = PathBuf::from(&user_path);
 
     let file_domains = file_processing::process_file(&path_file).unwrap();
-
-    println!("{:?}", file_domains);
+    let analyze = subdomain_health::SubdomainResult::subdomain_analyze(file_domains).await;
+    
+    match analyze {
+      Ok(success) => println!("{:?}", success),
+      Err(error) => println!("{:?}", error),
+    };
 }
