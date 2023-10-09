@@ -3,6 +3,8 @@ pub use crate::data_processor::file_processing;
 pub use crate::data_processor::subdomain_health;
 use std::path::PathBuf;
 use serde_json;
+use std::fs::File;
+use std::io::Write;
 
 
 fn main() {
@@ -18,7 +20,8 @@ fn main() {
     match analyze {
       Ok(success) => {
         let json_string = serde_json::to_string_pretty(&success).expect("Serilize Failed!");
-        println!("{}", json_string);
+        let mut new_file = File::create("Subdomain_Response.txt").expect("Filed to create file.");
+        new_file.write_all(json_string.as_bytes()).expect("Failed to write data.");
       },
       Err(error) => println!("{:?}", error),
     };
