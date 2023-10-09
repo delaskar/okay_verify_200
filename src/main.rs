@@ -2,6 +2,7 @@ mod data_processor;
 pub use crate::data_processor::file_processing;
 pub use crate::data_processor::subdomain_health;
 use std::path::PathBuf;
+use serde_json;
 
 
 fn main() {
@@ -15,7 +16,10 @@ fn main() {
     let analyze = subdomain_health::SubdomainResult::subdomain_analyze(file_domains);
     
     match analyze {
-      Ok(success) => println!("{:?}", success),
+      Ok(success) => {
+        let json_string = serde_json::to_string_pretty(&success).expect("Serilize Failed!");
+        println!("{}", json_string);
+      },
       Err(error) => println!("{:?}", error),
     };
 }

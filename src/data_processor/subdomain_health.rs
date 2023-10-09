@@ -1,20 +1,21 @@
 use reqwest::blocking;
 use reqwest::Error;
 use std::collections::HashMap;
+use serde::Serialize;
 
 
-#[derive(Debug)]
+#[derive(Serialize, Debug)]
 pub struct SubdomainResult {
     ip_origin: String,
     status_code: String,
     header: String,
-    fail: String,
+    operation: String,
 }
 
 impl SubdomainResult {
 
-    fn build_subdomain_result(ip_origin: String, status_code: String, header: String, fail: String) -> SubdomainResult {
-        Self { ip_origin , status_code , header, fail}
+    fn build_subdomain_result(ip_origin: String, status_code: String, header: String, operation: String) -> SubdomainResult {
+        Self { ip_origin , status_code , header, operation}
     }
     
     pub fn subdomain_analyze(subdomain_list: Vec<String>) -> Result<HashMap<String, SubdomainResult>, Error> {
@@ -36,24 +37,25 @@ impl SubdomainResult {
                         res_success.remote_addr().unwrap().to_string(),
                         res_success.status().to_string(),
                         format!("{:?}", res_success.headers()),
-                        String::from("None"),
+                        String::from("Request Success!"),
                     );
+
                     // Print succes on Terminal
                     let display_console = format!(
                         r#"
                         IP-Origin: {}
                         Status Code: {}
                         Header: {}
-                        fail: {}
+                        operation: {}
                         "#,
                         subdomain_result.ip_origin,
                         subdomain_result.status_code,
                         subdomain_result.header,
-                        subdomain_result.fail
+                        subdomain_result.operation
                     );
                     // Store data struct
                     analyze_result.insert(subdomain.clone(), subdomain_result);
-                    println!("Success:\n{}", display_console);
+                    println!("{}:\n{}", &subdomain, display_console);
                 }
                 Err(error_url) => {
                     let error_info = format!("{}", error_url);
@@ -70,16 +72,16 @@ impl SubdomainResult {
                         IP-Origin: {}
                         Status Code: {}
                         Header: {}
-                        fail: {}
+                        operation: {}
                         "#,
                         subdmain_error_result.ip_origin,
                         subdmain_error_result.status_code,
                         subdmain_error_result.header,
-                        subdmain_error_result.fail
+                        subdmain_error_result.operation
                     );
                     // Store data struct
                     analyze_result.insert(subdomain.clone(), subdmain_error_result);
-                    println!("Failed:\n{}", display_console);
+                    println!("{}:\n{}", &subdomain, display_console);
                 }
             };
         }
