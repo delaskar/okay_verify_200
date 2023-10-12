@@ -21,10 +21,10 @@ The report is saved in a file named "Subdomain_Response.txt" in the current work
 Dependencies
 The project relies on the following dependencies:
 
-regex = "1.9.6"
-reqwest = { version = "0.11.22", features = ["blocking", "json"] }
-serde = { version = "1.0.188", features = ["serde_derive", "derive"] }
-serde_json = "1.0.107"
+  * regex = "1.9.6"
+  * reqwest = { version = "0.11.22", features = ["blocking", "json"] }
+  * serde = { version = "1.0.188", features = ["serde_derive", "derive"] }
+  * serde_json = "1.0.107"
 
 ### Execution
 You can run the program using Rust and Cargo. Make sure you have Rust installed on your system and then follow these steps:
